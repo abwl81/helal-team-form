@@ -1,6 +1,16 @@
 import streamlit as st
 import pandas as pd
 import os
+from pathlib import Path
+
+# Load custom CSS
+def local_css(file_name):
+    css_path = Path(__file__).parent / file_name
+    with open(css_path) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+local_css("style.css")
+
 
 # مسیر فایل CSV (در لوکال یا Streamlit Cloud)
 FILE_PATH = "team_data.csv"
@@ -86,5 +96,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
