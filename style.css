@@ -1,4 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600&display=swap');
+/* --- تحمیل حالت روشن برای کل صفحه --- */
+html, body, .stApp {
+    background-color: #f8f9fa !important;
+    color: #222 !important;
+}
+div[data-testid="stAppViewContainer"] {
+    background-color: #f8f9fa !important;
+}
+div[data-testid="stHeader"]{
+    background-color: #f8f9fa !important;
+}
 
 /* ---------- بدنه اصلی ---------- */
 body {
