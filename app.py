@@ -151,7 +151,7 @@ st.markdown('<div class="admin-container">', unsafe_allow_html=True)
 st.markdown('<h2 class="admin-title">🛡️ بخش مدیریت</h2>', unsafe_allow_html=True)
 
 import os
-MASTER_PASSWORD = os.getenv("MASTER_PASSWORD", "admin123")  # رمز پیش‌فرض
+MASTER_PASSWORD = os.getenv("MASTER_PASSWORD")  # رمز پیش‌فرض
 
 # فیلد رمز عبور داخل باکس
 st.markdown('<div class="input-group">', unsafe_allow_html=True)
@@ -228,4 +228,5 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
 
