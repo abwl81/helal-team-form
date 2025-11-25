@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import os
+import sqlite3
 from pathlib import Path
 
 # ---------------------------------------------------
@@ -14,20 +14,58 @@ def local_css(file_name):
 local_css("style.css")
 
 # ---------------------------------------------------
-# مسیر فایل CSV
+# اتصال به دیتابیس SQLite
 # ---------------------------------------------------
-FILE_PATH = "team_data.csv"
+DB_PATH = "team_data.db"
 
-# ساخت فایل در صورت نبود
-if not os.path.exists(FILE_PATH):
-    df = pd.DataFrame(columns=[
-        "نام و نام خانوادگی",
-        "شماره تماس",
-        "رشته تحصیلی",
-        "درجه امدادگری",
-        "شماره تیم"
-    ])
-    df.to_csv(FILE_PATH, index=False, encoding="utf-8-sig")
+def init_db():
+    """ایجاد دیتابیس و جدول در صورت نبود"""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS team_members (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            full_name TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            major TEXT NOT NULL,
+            first_aid_degree TEXT,
+            team_number TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def insert_member(full_name, phone, major, degree, team_number):
+    """درج عضو جدید"""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO team_members (full_name, phone, major, first_aid_degree, team_number)
+        VALUES (?, ?, ?, ?, ?)
+    """, (full_name, phone, major, degree, team_number))
+    conn.commit()
+    conn.close()
+
+def get_all_members():
+    """دریافت همه اعضا"""
+    conn = sqlite3.connect(DB_PATH)
+    df = pd.read_sql_query("""
+        SELECT 
+            full_name as 'نام و نام خانوادگی',
+            phone as 'شماره تماس',
+            major as 'رشته تحصیلی',
+            first_aid_degree as 'درجه امدادگری',
+            team_number as 'شماره تیم',
+            created_at as 'تاریخ ثبت'
+        FROM team_members
+        ORDER BY id DESC
+    """, conn)
+    conn.close()
+    return df
+
+# ایجاد دیتابیس در اولین اجرا
+init_db()
 
 # ---------------------------------------------------
 # 📋 رابط کاربری فرم برای عموم کاربران
@@ -82,14 +120,17 @@ if st.button("📨 ثبت اطلاعات", use_container_width=True, key="submit
             unsafe_allow_html=True
         )
     else:
-        df = pd.read_csv(FILE_PATH)
-        new_row = pd.DataFrame([[full_name, phone, major, degree, num_tim]], columns=df.columns)
-        df = pd.concat([df, new_row], ignore_index=True)
-        df.to_csv(FILE_PATH, index=False, encoding="utf-8-sig")
-        st.markdown(
-            '<div class="alert alert-success">✅ اطلاعات با موفقیت ذخیره شد!</div>',
-            unsafe_allow_html=True
-        )
+        try:
+            insert_member(full_name, phone, major, degree, num_tim)
+            st.markdown(
+                '<div class="alert alert-success">✅ اطلاعات با موفقیت ذخیره شد!</div>',
+                unsafe_allow_html=True
+            )
+        except Exception as e:
+            st.markdown(
+                f'<div class="alert alert-error">❌ خطا در ذخیره‌سازی: {str(e)}</div>',
+                unsafe_allow_html=True
+            )
 
 # پایان باکس فرم
 st.markdown('</div>', unsafe_allow_html=True)
@@ -102,7 +143,8 @@ st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
 st.markdown('<div class="admin-container">', unsafe_allow_html=True)
 st.markdown('<h2 class="admin-title">🛡️ بخش مدیریت</h2>', unsafe_allow_html=True)
 
-MASTER_PASSWORD = os.getenv("MASTER_PASSWORD")
+import os
+MASTER_PASSWORD = os.getenv("MASTER_PASSWORD", "admin123")  # رمز پیش‌فرض
 
 # فیلد رمز عبور داخل باکس
 st.markdown('<div class="input-group">', unsafe_allow_html=True)
@@ -122,19 +164,43 @@ if admin_pass == MASTER_PASSWORD:
         unsafe_allow_html=True
     )
 
-    df = pd.read_csv(FILE_PATH)
-    st.markdown('<p class="table-title">📄 اطلاعات فعلی ثبت‌شده:</p>', unsafe_allow_html=True)
-    st.dataframe(df, use_container_width=True)
+    df = get_all_members()
+    
+    if len(df) > 0:
+        st.markdown('<p class="table-title">📄 اطلاعات فعلی ثبت‌شده:</p>', unsafe_allow_html=True)
+        st.dataframe(df, use_container_width=True)
 
-    # دکمه دانلود فایل CSV
-    st.download_button(
-        label="📁 دانلود فایل CSV اعضا",
-        data=open(FILE_PATH, "rb").read(),
-        file_name="team_members.csv",
-        mime="text/csv",
-        use_container_width=True,
-        key="download_btn"
-    )
+        # دکمه دانلود CSV
+        csv_data = df.to_csv(index=False, encoding="utf-8-sig")
+        st.download_button(
+            label="📁 دانلود فایل CSV اعضا",
+            data=csv_data,
+            file_name=f"team_members_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.csv",
+            mime="text/csv",
+            use_container_width=True,
+            key="download_btn"
+        )
+        
+        # دکمه دانلود Excel
+        from io import BytesIO
+        buffer = BytesIO()
+        with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+            df.to_excel(writer, index=False, sheet_name='اعضا')
+        buffer.seek(0)
+        
+        st.download_button(
+            label="📊 دانلود فایل Excel اعضا",
+            data=buffer,
+            file_name=f"team_members_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True,
+            key="download_excel_btn"
+        )
+    else:
+        st.markdown(
+            '<div class="alert alert-error">📭 هنوز داده‌ای ثبت نشده است.</div>',
+            unsafe_allow_html=True
+        )
 
 elif admin_pass != "":
     st.markdown(
