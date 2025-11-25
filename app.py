@@ -50,8 +50,9 @@ st.subheader("🛡️ بخش مدیریت (فقط مخصوص سرتیم)")
 
 # رمز را به‌صورت دستی یا از st.secrets بخوان
 # برای امنیت بالاتر در Streamlit Cloud، بعداً این خط را با st.secrets جایگزین کن
+import os
 
-MASTER_PASSWORD = st.secrets["MASTER_PASSWORD"]
+MASTER_PASSWORD = os.getenv("MASTER_PASSWORD")
 
 admin_pass = st.text_input("رمز عبور مدیر را وارد کنید:", type="password")
 
@@ -76,3 +77,4 @@ elif admin_pass != "":
 # ---------------------------------------------------
 # پایان برنامه
 # ---------------------------------------------------
+
