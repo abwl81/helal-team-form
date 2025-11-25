@@ -1,20 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap');
 
-/* --- تحمیل حالت روشن برای کل صفحه --- */
+/* --- تنظیمات کلی --- */
 html, body, .stApp {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%) !important;
-    color: #222 !important;
+    background: linear-gradient(135deg, #f0f2f5 0%, #e8ebed 100%) !important;
+    color: #1a1a1a !important;
 }
 
 div[data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%) !important;
+    background: linear-gradient(135deg, #f0f2f5 0%, #e8ebed 100%) !important;
 }
 
-div[data-testid="stHeader"]{
+div[data-testid="stHeader"] {
     background-color: transparent !important;
 }
 
-/* ---------- بدنه اصلی ---------- */
 body {
     direction: rtl;
     text-align: right;
@@ -23,61 +22,61 @@ body {
     padding: 0;
 }
 
-/* ---------- هدر سایت ---------- */
-.header-section {
+/* --- هدر صفحه --- */
+.header-container {
     text-align: center;
-    padding: 30px 20px;
-    margin-bottom: 20px;
+    padding: 40px 20px 30px;
+    margin-bottom: 30px;
+}
+
+.header-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
 .main-title {
     color: #c40027;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     text-shadow: 2px 2px 4px rgba(196, 0, 39, 0.1);
 }
 
 .subtitle {
     color: #555;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 400;
+    margin: 0;
 }
 
-/* ---------- فرم ---------- */
-.form-container {
+/* --- باکس اصلی فرم --- */
+.form-box {
     background: #ffffff;
     border: 3px solid #c40027;
-    border-radius: 20px;
-    padding: 50px 60px;
-    max-width: 700px;
-    margin: 40px auto;
-    box-shadow: 0 10px 40px rgba(196, 0, 39, 0.15);
-    position: relative;
+    border-radius: 16px;
+    padding: 40px 50px;
+    max-width: 650px;
+    margin: 0 auto 40px;
+    box-shadow: 0 8px 30px rgba(196, 0, 39, 0.12);
 }
 
-.form-container::before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    right: -3px;
-    bottom: -3px;
-    background: linear-gradient(45deg, #c40027, #ff4d6d);
-    border-radius: 20px;
-    z-index: -1;
-    opacity: 0.3;
-    filter: blur(10px);
+/* --- گروه‌بندی فیلدها --- */
+.input-group {
+    margin-bottom: 24px;
 }
 
-/* ---------- لیبل‌های فیلد ---------- */
-.field-label {
+.input-label {
     display: block;
-    color: #333;
+    color: #2c3e50;
     font-weight: 600;
     font-size: 0.95rem;
     margin-bottom: 8px;
-    margin-top: 15px;
 }
 
 .required {
@@ -85,46 +84,65 @@ body {
     font-weight: 700;
 }
 
-/* ---------- فیلدها ---------- */
-input, textarea, select {
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    padding: 14px 16px;
-    width: 100%;
-    font-family: 'Vazirmatn', sans-serif;
-    direction: rtl;
-    color: #000;
-    background-color: #fafafa;
-    transition: all 0.3s ease;
-    font-size: 1rem;
+.optional {
+    color: #6c757d;
+    font-weight: 400;
+    font-size: 0.85rem;
 }
 
-input:focus, select:focus, textarea:focus {
-    border-color: #c40027;
-    background-color: #fff;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(196, 0, 39, 0.1);
-    transform: translateY(-2px);
+/* --- استایل فیلدهای ورودی --- */
+input[type="text"],
+input[type="password"],
+textarea {
+    background-color: #f8f9fa !important;
+    border: 2px solid #c40027 !important;
+    border-radius: 10px !important;
+    padding: 14px 18px !important;
+    font-family: 'Vazirmatn', sans-serif !important;
+    font-size: 0.95rem !important;
+    color: #1a1a1a !important;
+    direction: rtl !important;
+    width: 100% !important;
+    transition: all 0.3s ease !important;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    background-color: #ffffff !important;
+    border-color: #a70020 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 4px rgba(196, 0, 39, 0.1) !important;
 }
 
 input::placeholder {
-    color: #999;
-    font-size: 0.9rem;
+    color: #95a5a6 !important;
+    font-size: 0.9rem !important;
 }
 
-/* ---------- دکمه ---------- */
+/* حذف استایل‌های اضافی Streamlit */
+div[data-baseweb="input"] {
+    background-color: transparent !important;
+}
+
+div[data-baseweb="base-input"] {
+    background-color: transparent !important;
+}
+
+/* --- دکمه ثبت اطلاعات --- */
 .stButton > button {
     background: linear-gradient(135deg, #c40027 0%, #a70020 100%) !important;
-    color: #fff !important;
-    border-radius: 12px !important;
+    color: #ffffff !important;
     border: none !important;
+    border-radius: 12px !important;
     padding: 16px 0 !important;
-    width: 100%;
-    font-weight: 700 !important;
     font-size: 1.1rem !important;
-    transition: all 0.3s ease !important;
+    font-weight: 700 !important;
+    width: 100%;
+    margin-top: 10px;
     box-shadow: 0 4px 15px rgba(196, 0, 39, 0.3);
-    margin-top: 25px;
+    transition: all 0.3s ease !important;
+    cursor: pointer;
 }
 
 .stButton > button:hover {
@@ -137,46 +155,46 @@ input::placeholder {
     transform: translateY(0);
 }
 
-/* ---------- پیام‌های خطا و موفقیت ---------- */
-.error-message {
+/* --- پیام‌های هشدار --- */
+.alert {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.alert-error {
     background-color: #fff3cd;
     border: 2px solid #ffc107;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 20px 0;
     color: #856404;
-    text-align: center;
-    font-weight: 600;
 }
 
-.success-message {
+.alert-success {
     background-color: #d4edda;
     border: 2px solid #28a745;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 20px 0;
     color: #155724;
-    text-align: center;
-    font-weight: 600;
 }
 
-/* ---------- جداکننده ---------- */
-.divider {
-    height: 2px;
+/* --- جداکننده بخش‌ها --- */
+.section-divider {
+    height: 3px;
     background: linear-gradient(90deg, transparent, #c40027, transparent);
     margin: 50px auto;
-    max-width: 600px;
+    max-width: 500px;
+    border-radius: 2px;
 }
 
-/* ---------- بخش مدیریت ---------- */
-.admin-section {
+/* --- بخش مدیریت --- */
+.admin-container {
     background: #ffffff;
     border: 2px solid #6c757d;
-    border-radius: 15px;
+    border-radius: 16px;
     padding: 40px 50px;
-    max-width: 700px;
+    max-width: 650px;
     margin: 40px auto;
-    box-shadow: 0 5px 25px rgba(108, 117, 125, 0.15);
+    box-shadow: 0 6px 25px rgba(108, 117, 125, 0.12);
 }
 
 .admin-title {
@@ -184,52 +202,58 @@ input::placeholder {
     font-size: 1.8rem;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
-.data-title {
-    color: #333;
+.table-title {
+    color: #2c3e50;
     font-weight: 600;
-    font-size: 1.1rem;
-    margin-top: 25px;
+    font-size: 1rem;
+    margin-top: 30px;
     margin-bottom: 15px;
 }
 
-/* ---------- جدول داده ---------- */
+/* --- جدول داده‌ها --- */
 div[data-testid="stDataFrame"] {
     border: 2px solid #dee2e6;
     border-radius: 10px;
     overflow: hidden;
 }
 
-/* ---------- امضا ---------- */
-.footer {
+/* --- امضای پایین --- */
+.footer-signature {
     text-align: center;
     color: #6c757d;
     font-size: 0.9rem;
     margin-top: 60px;
-    padding: 30px 0;
+    padding: 30px 20px;
     border-top: 2px solid #dee2e6;
 }
 
-.footer strong {
+.footer-signature strong {
     color: #c40027;
     font-weight: 700;
 }
 
-/* ---------- واکنش گرا ---------- */
+/* --- واکنش‌گرا برای موبایل --- */
 @media (max-width: 768px) {
-    .form-container,
-    .admin-section {
+    .form-box,
+    .admin-container {
         padding: 30px 25px;
         margin: 20px 15px;
     }
     
     .main-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
     
-    .field-label {
-        font-size: 0.9rem;
+    .header-icon {
+        font-size: 2.5rem;
+    }
+    
+    input[type="text"],
+    input[type="password"] {
+        font-size: 0.9rem !important;
+        padding: 12px 16px !important;
     }
 }
