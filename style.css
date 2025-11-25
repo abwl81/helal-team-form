@@ -100,3 +100,62 @@ input:focus, select:focus, textarea:focus {
     font-size: 12px;
     margin-top: 40px;
 }
+/* کلیات بدنه */
+body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: #0d0e11;
+    color: #fff;
+}
+
+/* کادر اصلی فرم */
+.form-container {
+    background-color: #1a1b20;
+    border: 2px solid #c40027;
+    border-radius: 12px;
+    padding: 40px 50px;
+    max-width: 600px;
+    margin: 60px auto;
+    box-shadow: 0 0 25px rgba(196,0,39,0.2);
+}
+
+/* تیتر و توضیح */
+h1, h2, h3, p, label {
+    text-align: right !important;
+    direction: rtl;
+}
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+}
+p {
+    color: #ddd;
+}
+
+/* فیلدهای ورودی */
+input, select, textarea {
+    width: 100%;
+    direction: rtl;
+}
+
+/* دکمه ثبت */
+.stButton > button {
+    background-color: #c40027 !important;
+    color: #fff !important;
+    border-radius: 6px;
+    font-weight: 600;
+    width: 100%;
+}
+.stButton > button:hover {
+    background-color: #a80022 !important;
+}
+
+/* واکنش‌گرا برای موبایل */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 25px 20px;
+        margin: 30px 10px;
+    }
+}
