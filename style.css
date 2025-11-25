@@ -41,17 +41,17 @@ body {
 }
 
 .main-title {
-    color: #c40027;
+    color: #1a1a1a;
     font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 12px;
-    text-shadow: 2px 2px 4px rgba(196, 0, 39, 0.1);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .subtitle {
-    color: #555;
+    color: #2c3e50;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 500;
     margin: 0;
 }
 
@@ -73,7 +73,7 @@ body {
 
 .input-label {
     display: block;
-    color: #2c3e50;
+    color: #1a1a1a;
     font-weight: 600;
     font-size: 0.95rem;
     margin-bottom: 8px;
@@ -189,16 +189,16 @@ div[data-baseweb="base-input"] {
 /* --- بخش مدیریت --- */
 .admin-container {
     background: #ffffff;
-    border: 2px solid #6c757d;
+    border: 3px solid #495057;
     border-radius: 16px;
     padding: 40px 50px;
     max-width: 650px;
     margin: 40px auto;
-    box-shadow: 0 6px 25px rgba(108, 117, 125, 0.12);
+    box-shadow: 0 6px 25px rgba(73, 80, 87, 0.15);
 }
 
 .admin-title {
-    color: #495057;
+    color: #1a1a1a;
     font-size: 1.8rem;
     font-weight: 700;
     text-align: center;
@@ -206,7 +206,7 @@ div[data-baseweb="base-input"] {
 }
 
 .table-title {
-    color: #2c3e50;
+    color: #1a1a1a;
     font-weight: 600;
     font-size: 1rem;
     margin-top: 30px;
@@ -223,7 +223,7 @@ div[data-testid="stDataFrame"] {
 /* --- امضای پایین --- */
 .footer-signature {
     text-align: center;
-    color: #6c757d;
+    color: #495057;
     font-size: 0.9rem;
     margin-top: 60px;
     padding: 30px 20px;
