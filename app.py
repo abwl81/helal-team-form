@@ -29,34 +29,34 @@ if not os.path.exists(FILE_PATH):
 # ---------------------------------------------------
 # رابط کاربری فرم برای تمام کاربران
 # -----------------------
-
 st.markdown('<div class="form-container">', unsafe_allow_html=True)
 
-st.title("📋 فرم ثبت اطلاعات اعضای تیم ")
-st.write("لطفاً مشخصات خود را کامل وارد کنید:")
+ st.title("📋 فرم ثبت اطلاعات اعضای تیم ")
+ st.write("لطفاً مشخصات خود را کامل وارد کنید:")
 
-full_name = st.text_input("نام و نام خانوادگی *")
-phone = st.text_input("شماره تماس *")
-major = st.text_input("رشته تحصیلی *")
-degree = st.text_input("درجه امدادگری (اختیاری)")
-num_tim = st.text_input(" (عدد وارد کنید)شماره تیم خود را وارد کنید *", placeholder="مثلاً 7")
+ full_name = st.text_input("نام و نام خانوادگی *")
+ phone = st.text_input("شماره تماس *")
+ major = st.text_input("رشته تحصیلی *")
+ degree = st.text_input("درجه امدادگری (اختیاری)")
+ num_tim = st.text_input(" (عدد وارد کنید)شماره تیم خود را وارد کنید *", placeholder="مثلاً 7")
 
 # ----- دکمه ثبت -----
-if st.button("  📨 ثبت اطلاعات "):
-    if not full_name or not phone or not major or not num_tim:
-        st.error("⚠️ لطفاً همه فیلدهای اجباری را پر کنید.")
-    else:
-        df = pd.read_csv(FILE_PATH)
-        new_row = pd.DataFrame(
-            [[full_name, phone, major, degree, num_tim]], columns=df.columns)
-        df = pd.concat([df, new_row], ignore_index=True)
-        df.to_csv(FILE_PATH, index=False, encoding="utf-8-sig")
-        st.success(" ✅ اطلاعات با موفقیت ذخیره شد!")
+ if st.button("  📨 ثبت اطلاعات "):
+     if not full_name or not phone or not major or not num_tim:
+         st.error("⚠️ لطفاً همه فیلدهای اجباری را پر کنید.")
+     else:
+         df = pd.read_csv(FILE_PATH)
+         new_row = pd.DataFrame(
+             [[full_name, phone, major, degree, num_tim]], columns=df.columns)
+         df = pd.concat([df, new_row], ignore_index=True)
+         df.to_csv(FILE_PATH, index=False, encoding="utf-8-sig")
+         st.success(" ✅ اطلاعات با موفقیت ذخیره شد!")
 
 # ---------------------------------------------------
-st.markdown("---")
+
 st.markdown('</div>', unsafe_allow_html=True)
 
+st.markdown("---")
 # ---------------------------------------------------
 # 🔐 بخش مخصوص مدیر (رمز عبور)
 # ---------------------------------------------------
@@ -100,6 +100,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 
