@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 from pathlib import Path
-
+from datetime import datetime
+import pytz  # اضافه شد
 # ---------------------------------------------------
 # 📦 Load custom CSS
 # ---------------------------------------------------
@@ -30,22 +31,28 @@ def init_db():
             major TEXT NOT NULL,
             first_aid_degree TEXT,
             team_number TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TEXT NOT NULL
         )
     """)
     conn.commit()
     conn.close()
 
+
 def insert_member(full_name, phone, major, degree, team_number):
-    """درج عضو جدید"""
+    """درج عضو جدید با زمان ایران"""
+    # تنظیم timezone ایران
+    iran_tz = pytz.timezone('Asia/Tehran')
+    now = datetime.now(iran_tz).strftime('%Y-%m-%d %H:%M:%S')
+    
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO team_members (full_name, phone, major, first_aid_degree, team_number)
-        VALUES (?, ?, ?, ?, ?)
-    """, (full_name, phone, major, degree, team_number))
+        INSERT INTO team_members (full_name, phone, major, first_aid_degree, team_number, created_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (full_name, phone, major, degree, team_number, now))
     conn.commit()
     conn.close()
+
 
 def get_all_members():
     """دریافت همه اعضا"""
@@ -221,3 +228,4 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
