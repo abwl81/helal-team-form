@@ -39,7 +39,7 @@ st.markdown(
     <div class="header-container">
         <div class="header-icon">📋</div>
         <h1 class="main-title">فرم ثبت اطلاعات اعضای تیم</h1>
-        <p class="subtitle">لطفاً مشخصات خود را کامل وارد کنید:</p>
+        <p class="subtitle">لطفاً مشخصات خود را کامل وارد کنید</p>
     </div>
     """,
     unsafe_allow_html=True
@@ -104,12 +104,17 @@ st.markdown('<h2 class="admin-title">🛡️ بخش مدیریت</h2>', unsafe_a
 
 MASTER_PASSWORD = os.getenv("MASTER_PASSWORD")
 
+# فیلد رمز عبور داخل باکس
+st.markdown('<div class="input-group">', unsafe_allow_html=True)
+st.markdown('<label class="input-label">رمز عبور مدیر</label>', unsafe_allow_html=True)
 admin_pass = st.text_input(
-    "رمز عبور مدیر را وارد کنید:",
+    "رمز",
     type="password",
     key="admin_pass",
-    placeholder="رمز عبور"
+    placeholder="رمز عبور",
+    label_visibility="collapsed"
 )
+st.markdown('</div>', unsafe_allow_html=True)
 
 if admin_pass == MASTER_PASSWORD:
     st.markdown(
