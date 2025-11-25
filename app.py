@@ -32,66 +32,85 @@ if not os.path.exists(FILE_PATH):
 # ---------------------------------------------------
 # 📋 رابط کاربری فرم برای عموم کاربران
 # ---------------------------------------------------
+st.markdown('<div class="header-section">', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title">📋 فرم ثبت اطلاعات اعضای تیم</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">لطفاً مشخصات خود را کامل وارد کنید:</p>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
 st.markdown('<div class="form-container">', unsafe_allow_html=True)
 
-st.title("📋 فرم ثبت اطلاعات اعضای تیم")
-st.write("لطفاً مشخصات خود را کامل وارد کنید:")
+# فیلدهای ورودی با لیبل‌های سفارشی
+st.markdown('<label class="field-label">نام و نام خانوادگی <span class="required">*</span></label>', unsafe_allow_html=True)
+full_name = st.text_input("نام و نام خانوادگی", label_visibility="collapsed", key="name")
 
-# فیلدهای ورودی
-full_name = st.text_input("نام و نام خانوادگی *")
-phone = st.text_input("شماره تماس *")
-major = st.text_input("رشته تحصیلی *")
-degree = st.text_input("درجه امدادگری (اختیاری)")
-num_tim = st.text_input("شماره تیم خود را وارد کنید (عدد وارد کنید) *", placeholder="مثلاً 7")
+st.markdown('<label class="field-label">شماره تماس <span class="required">*</span></label>', unsafe_allow_html=True)
+phone = st.text_input("شماره تماس", label_visibility="collapsed", key="phone")
+
+st.markdown('<label class="field-label">رشته تحصیلی <span class="required">*</span></label>', unsafe_allow_html=True)
+major = st.text_input("رشته تحصیلی", label_visibility="collapsed", key="major")
+
+st.markdown('<label class="field-label">درجه امدادگری (اختیاری)</label>', unsafe_allow_html=True)
+degree = st.text_input("درجه امدادگری", label_visibility="collapsed", key="degree")
+
+st.markdown('<label class="field-label">شماره تیم خود را وارد کنید (عدد وارد کنید) <span class="required">*</span></label>', unsafe_allow_html=True)
+num_tim = st.text_input("شماره تیم", placeholder="مثلاً 7", label_visibility="collapsed", key="team")
 
 # ----- دکمه ثبت -----
-if st.button("📨 ثبت اطلاعات"):
-    if not full_name or not phone or not major or not num_tim:
-        st.error("⚠️ لطفاً همه فیلدهای اجباری را پر کنید.")
-    else:
-        df = pd.read_csv(FILE_PATH)
-        new_row = pd.DataFrame([[full_name, phone, major, degree, num_tim]], columns=df.columns)
-        df = pd.concat([df, new_row], ignore_index=True)
-        df.to_csv(FILE_PATH, index=False, encoding="utf-8-sig")
-        st.success("✅ اطلاعات با موفقیت ذخیره شد!")
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    if st.button("📨 ثبت اطلاعات", use_container_width=True):
+        if not full_name or not phone or not major or not num_tim:
+            st.markdown('<div class="error-message">⚠️ لطفاً همه فیلدهای اجباری را پر کنید.</div>', unsafe_allow_html=True)
+        else:
+            df = pd.read_csv(FILE_PATH)
+            new_row = pd.DataFrame([[full_name, phone, major, degree, num_tim]], columns=df.columns)
+            df = pd.concat([df, new_row], ignore_index=True)
+            df.to_csv(FILE_PATH, index=False, encoding="utf-8-sig")
+            st.markdown('<div class="success-message">✅ اطلاعات با موفقیت ذخیره شد!</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
-st.markdown("---")
+st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # 🔐 بخش مخصوص مدیر (با رمز عبور)
 # ---------------------------------------------------
-st.subheader("🛡️ بخش مدیریت")
+st.markdown('<div class="admin-section">', unsafe_allow_html=True)
+st.markdown('<h2 class="admin-title">🛡️ بخش مدیریت</h2>', unsafe_allow_html=True)
 
-MASTER_PASSWORD = os.getenv("MASTER_PASSWORD")  # رمز از متغیر محیطی Render خوانده می‌شود
+MASTER_PASSWORD = os.getenv("MASTER_PASSWORD")
 
-admin_pass = st.text_input("رمز عبور مدیر را وارد کنید:", type="password")
+admin_pass = st.text_input("رمز عبور مدیر را وارد کنید:", type="password", key="admin_pass")
 
 if admin_pass == MASTER_PASSWORD:
-    st.success("✅ خوش آمدی! دسترسی مدیر فعال است.")
+    st.markdown('<div class="success-message">✅ خوش آمدی! دسترسی مدیر فعال است.</div>', unsafe_allow_html=True)
 
     df = pd.read_csv(FILE_PATH)
-    st.write("📄 اطلاعات فعلی ثبت‌شده:")
-    st.dataframe(df)
+    st.markdown('<p class="data-title">📄 اطلاعات فعلی ثبت‌شده:</p>', unsafe_allow_html=True)
+    st.dataframe(df, use_container_width=True)
 
     # دکمه دانلود فایل CSV
-    st.download_button(
-        label="📁 دانلود فایل CSV اعضا",
-        data=open(FILE_PATH, "rb").read(),
-        file_name="team_members.csv",
-        mime="text/csv",
-    )
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.download_button(
+            label="📁 دانلود فایل CSV اعضا",
+            data=open(FILE_PATH, "rb").read(),
+            file_name="team_members.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
 
 elif admin_pass != "":
-    st.error("❌ رمز اشتباه است. دسترسی ندارید.")
+    st.markdown('<div class="error-message">❌ رمز اشتباه است. دسترسی ندارید.</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------
 # 👣 امضای پایین صفحه
 # ---------------------------------------------------
 st.markdown(
     """
-    <div style="text-align:center; color:gray; font-size:12px; margin-top:50px;">
-        🛠️ طراحی و توسعه توسط <b>مهندس ابوالفضل عابدی</b>
+    <div class="footer">
+        <p>🛠️ طراحی و توسعه توسط <strong>مهندس ابوالفضل عابدی</strong></p>
     </div>
     """,
     unsafe_allow_html=True,
